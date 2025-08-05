@@ -1,10 +1,10 @@
 from datetime import datetime, timedelta, timezone
 from flask import Blueprint,  jsonify, make_response, request
-from models.user_model import User
+from models.user.user_model import User
 from werkzeug.security import generate_password_hash, check_password_hash
 import jwt
-from init import db
-
+from  models.user.user_db import db
+from flask import current_app
 
 user_bp = Blueprint("user",__name__)
 
@@ -34,8 +34,8 @@ def login():
     user = User.query.filter_by(email=email).first()
     if not user or not check_password_hash(user.password, password):
             return jsonify({'success': 'False','message': 'Invalid email or password'}), 401
-    from app import app
-    token = jwt.encode({'id': user.id, 'exp': datetime.now(timezone.utc) + timedelta(hours=1)},app.config['SECRET_KEY'], algorithm="HS256")
+   
+    token = jwt.encode({'id': user.id, 'exp': datetime.now(timezone.utc) + timedelta(hours=1)},current_app.config['SECRET_KEY'], algorithm="HS256")
     user.setLastLoggedin()
     response = make_response(jsonify({'success': 'True','message': 'User logged in successfully.','data':user.toJSON()}),200)
     response.set_cookie('jwt_token',token)
