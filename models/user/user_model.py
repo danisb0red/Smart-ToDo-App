@@ -17,12 +17,20 @@ class User(db.Model):
         self.last_name = last_name
         self.email = email
         self.password = password
-
-        if self.password == "admin123":
+        if self.first_name == "admin":
             self.isAdmin = True
-    def setLastLoggedin(self):
+        else :
+            self.isAdmin = False
+
+    def set_Last_Loggedin(self):
+        """Setter for lastlogin attribute of User"""
         self.lastLogin = datetime.now(timezone.utc)
+        db.session.commit()
+    def set_Last_Updated(self):
+        """Setter for updatedAt attribute of User"""
+        self.updatedAt = datetime.now(timezone.utc)
         db.session.commit()
 
     def toJSON(self):
+        """To provide JSON representation of a User object."""
         return {'first_name': self.first_name,'last_name':self.last_name,'email':self.email,'isAdmin': self.isAdmin,'createdAt': self.createdAt,'updatedAt' : self.updatedAt, 'lastLogin':self.lastLogin}
