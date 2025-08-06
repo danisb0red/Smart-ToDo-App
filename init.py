@@ -1,8 +1,9 @@
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from routes.user.user_routes import user_bp
+from routes.task.task_routes import task_bp
 from models.user.user_model import User
-from models.user.user_db import db
+from models.db import db
 from dotenv import load_dotenv
 import os
 load_dotenv()
@@ -15,6 +16,7 @@ def create_app():
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
     db.init_app(app)
     app.register_blueprint(user_bp)
+    app.register_blueprint(task_bp)
     with app.app_context():
         db.create_all()
 

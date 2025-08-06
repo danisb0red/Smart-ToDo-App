@@ -1,5 +1,6 @@
-from models.user.user_db import db
+from models.db import db
 from datetime import datetime, timezone
+from models.task.task_model import Task
 
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -11,6 +12,7 @@ class User(db.Model):
     createdAt = db.Column(db.DateTime, default=datetime.now(timezone.utc))
     updatedAt = db.Column(db.DateTime, default=datetime.now(timezone.utc))
     lastLogin = db.Column(db.DateTime, default=None)
+    tasks = db.relationship('Task', backref='user')
 
     def __init__(self, first_name,last_name,email,password):
         self.first_name = first_name

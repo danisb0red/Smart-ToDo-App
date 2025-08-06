@@ -3,7 +3,7 @@ from flask import Blueprint,  jsonify, make_response, request
 from models.user.user_model import User
 from werkzeug.security import generate_password_hash, check_password_hash
 import jwt
-from  models.user.user_db import db
+from  models.db import db
 from flask import current_app
 import re
 from routes.user.user_utils import check_Token, is_Admin
